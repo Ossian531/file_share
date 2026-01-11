@@ -5,6 +5,7 @@ import (
 	"context"
 	"os"
     "time"
+    "fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -36,6 +37,7 @@ func generateS3Client(ctx context.Context) (*s3.Client, error) {
 	cfg, err := loadMinioConfig(ctx)
 
 	if err != nil {
+		fmt.Println(err)
 		return nil, nil
 	}
 
@@ -51,6 +53,7 @@ func GeneratePresignedUploadURL(ctx context.Context, filename string) (string, e
     cfg, err := loadMinioConfig(ctx)
 
     if err != nil {
+		fmt.Println(err)
         return "", err
     }
 
@@ -65,6 +68,7 @@ func GeneratePresignedUploadURL(ctx context.Context, filename string) (string, e
     }, s3.WithPresignExpires(5*time.Minute))
 
     if err != nil {
+		fmt.Println(err)
         return "", err
     }
 
@@ -77,6 +81,7 @@ func GeneratePresignedDownloadURL(ctx context.Context, filename string) (string,
     cfg, err := loadMinioConfig(ctx)
 
     if err != nil {
+		fmt.Println(err)
         return "", err
     }
 
@@ -91,6 +96,7 @@ func GeneratePresignedDownloadURL(ctx context.Context, filename string) (string,
     }, s3.WithPresignExpires(5*time.Minute))
 
     if err != nil {
+		fmt.Println(err)
         return "", err
     }
 
@@ -100,6 +106,7 @@ func GeneratePresignedDownloadURL(ctx context.Context, filename string) (string,
 func ListObjects(ctx context.Context, prefix string) ([]string, error) {
 	client, err := generateS3Client(ctx)
 	if err != nil {
+		fmt.Println(err)
 		return []string{}, err
 	}
 
@@ -114,6 +121,7 @@ func ListObjects(ctx context.Context, prefix string) ([]string, error) {
         page, err := paginator.NextPage(ctx)
 
         if err != nil {
+			fmt.Println(err)
             return nil, err
         }
 

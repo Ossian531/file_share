@@ -27,14 +27,11 @@ func main(){
 
 	api := api.Mux()
 
-	// Mount API under /api
 	root.Handle("/api/", http.StripPrefix("/api", api))
 
-	// ---- Static files ----
 	fs := http.FileServer(http.Dir("./static"))
 	root.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// ---- Index ----
 	root.HandleFunc("/", indexHandler)
 
 	port := fmt.Sprintf(":%d", app_config.AppConfig.Port)
